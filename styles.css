@@ -1,0 +1,83 @@
+:root{
+    --board-size: 20vw;
+}
+body{
+    background-color: #fff;
+}
+#board{
+    justify-content: center;
+    position: relative;
+    width: var(--board-size);
+    aspect-ratio: 1;
+    margin: auto;
+    margin-top: 15%;
+}
+#playArea{
+    /* position: absolute;
+    left: calc(var(--board-size) * 1.17);
+    top: calc(var(--board-size) * .3); */
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: calc(var(--board-size) * .05 );
+    aspect-ratio: 1;
+    max-width: var(--board-size);
+}
+.box{
+    aspect-ratio: 1;
+    width: calc(var(--board-size) * .3);
+    padding: 0;
+    background-color: transparent;
+    border: none;
+}
+.box:hover{
+    background-color: lightgray;
+}
+.box:hover:disabled{
+    background-color: transparent;
+}
+img{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+
+/* lines to make the board */
+.line{
+    width: calc(var(--board-size) * 1.15);
+    position: absolute;
+}
+.line.h{
+    left: -10%;
+}
+.line.v{
+    transform: rotate(90deg);
+    top: 45%;
+}
+#left{
+    left: -25%;
+}
+#right{
+    left: 10%;
+}
+#top{
+    top: 28%;
+}
+#bottom{
+    top: 60%;
+}
+/* phone */
+@media (max-width:1200px){
+    :root{
+        --board-size: 40vw;
+    }
+}
+/* phone */
+@media (max-width:480px){
+    :root{
+        --board-size: 80vw;
+    }
+    #board{
+        margin-top: 30%;
+    }
+}

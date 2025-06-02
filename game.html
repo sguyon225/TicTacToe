@@ -6,8 +6,9 @@
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
 </head>
-<body>
+<body id="body">
     <section id="board">
         <section id="playArea">
             <button class="box" id="1" onclick="capture(this)"></button>
@@ -27,5 +28,11 @@
             <div class="line h" id="bottom"></div>
         </section>
     </section>
+    <div class="win" id="win">
+        <div class="inner">
+            <div id="head">If you're reading this, I'm broken!</div>
+            <button onclick="window.location.reload()">Play again!</button>
+        </div>
+    </div>
 </body>
 </html>

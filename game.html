@@ -9,6 +9,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
 </head>
 <body id="body">
+    <div class="players">
+        <img src="letters\1\0.png">
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+        <img src="letters\1\1.png">
+    </div>
     <section id="board">
         <section id="playArea">
             <button class="box" id="1" onclick="capture(this)"></button>
@@ -30,7 +38,7 @@
     </section>
     <div class="win" id="win">
         <div class="inner"> 
-            <div id="victory">If you're reading this, I'm broken!</div>
+            <div id="message">If you're reading this, I'm broken!</div>
             <button onclick="window.location.reload()" id="again"></button>
         </div>
     </div>

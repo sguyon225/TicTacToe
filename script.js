@@ -8,9 +8,7 @@ let winCons = [
     ["1","2","3"],["4","5","6"],["7","8","9"],["1","4","7"],
     ["2","5","8"],["3","6","9"],["1","5","9"],["3","5","7"]] //Win Conditions
 
-function capture(button){
-    let num;
-    
+function capture(button){    
     if(turn == "X"){
         xTiles.push(button.getAttribute("id"));
         xs++;
@@ -22,19 +20,23 @@ function capture(button){
     button.appendChild(img);
     button.setAttribute("disabled", true)
 
-    if(xs>2){
+    if(turn == "X" && xs>2){
         check(xTiles);
     }
-    if(os>2){
+    if(turn == "O" && os>2){
         check(oTiles);
+    }else if(os == 4){
+        tie();
     }
 
     switch(turn){
         case "X":
             turn = "O";
+            document.documentElement.style.setProperty("--current-img", `url("letters/O/0.png")`)
             break;
         case "O":
             turn = "X";
+            document.documentElement.style.setProperty("--current-img", `url("letters/X/0.png")`)
             break;
     }
 }
@@ -70,23 +72,32 @@ function check(tiles){
     }
 }
 
-function win(){
+function endGame(){
     let buttons = document.querySelectorAll(".box");
     for(let button of buttons){
         button.setAttribute("disabled", true);
     }
+}
+
+function tie(){
+    endGame()
+}
+
+function win(){
+    endGame()
     fireworks()
     document.getElementById("win").classList.add("show");
     document.getElementById("win").style.pointerEvents = "all";
 
-    victoryMessage();
+    message();
     playAgain();
 }
 
-function victoryMessage(){
-    let victory = document.getElementById("victory");
+function message(){
+    let message = document.getElementById("message");
     
     //Condense into For Loop later
+    //helper function?
     let XO = getLetter(turn);
     let _ = getLetter("_")
     let W = getLetter("W");
@@ -113,8 +124,8 @@ function victoryMessage(){
     wins.appendChild(S);
     wins.appendChild(E);
 
-    victory.removeChild(victory.firstChild);
-    victory.appendChild(wins);
+    message.removeChild(message.firstChild);
+    message.appendChild(wins);
 }
 
 function playAgain(){
@@ -135,19 +146,10 @@ function playAgain(){
 }
 
 function makeBoard(){
-    let lineFiles = [];
+    let lines = document.getElementById("lines").children;
     for(let i = 0; i<4; i++){
-        let num = Math.floor((Math.random()*100)) % vars;
-        lineFiles.push("board/"+num+".png");
-    }
-
-    let lineDivs = document.getElementById("lines").children;
-    for(let i = 0; i<4; i++){
-        let img = document.createElement("img");
-        img.setAttribute("src", lineFiles[i]);
-        img.setAttribute("alt", "line of the tic tac toe board");
-        img.setAttribute("draggable", false);
-        lineDivs[i].appendChild(img);
+        let img = getLetter("line");
+        lines[i].appendChild(img);
     }
 }
 

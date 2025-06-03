@@ -1,7 +1,5 @@
 var turn = "X";     //Who's turn is it
-const x = 5;        //How many "X" imgs in folder
-const o = 5;        //How many "O" imgs in folder
-const lines = 5;    //How many lines in board folder
+const vars = 5;     //How many imgs of each letter in folders
 var xs = 0;         //How many Xs on board
 var os = 0;         //How many Os on board
 var xTiles = []     //Places of Xs
@@ -14,25 +12,21 @@ function capture(button){
     let num;
     
     if(turn == "X"){
-        num=Math.floor((Math.random()*100)) % x;
         xTiles.push(button.getAttribute("id"));
         xs++;
     }else{
-        num=Math.floor((Math.random()*100)) % x;
         oTiles.push(button.getAttribute("id"));
         os++;
     }
-    let img = document.createElement("img");
-    img.setAttribute("src", turn+"/"+num+".png");
-    img.setAttribute("alt", turn);
-    img.setAttribute("draggable", false);
+    let img = getLetter(turn)
     button.appendChild(img);
     button.setAttribute("disabled", true)
 
     if(xs>2){
-        check(xTiles)
-    }else if(os>2){
-        check(oTiles)
+        check(xTiles);
+    }
+    if(os>2){
+        check(oTiles);
     }
 
     switch(turn){
@@ -43,6 +37,22 @@ function capture(button){
             turn = "X";
             break;
     }
+}
+
+function getLetter(letter){
+    if(letter == "_"){
+        num = 0;
+    }else{
+        num=Math.floor((Math.random()*100)) % vars;
+    }
+
+    let img = document.createElement("img");
+    img.setAttribute("src", "letters/"+letter+"/"+num+".png");
+    img.setAttribute("alt", letter);
+    img.setAttribute("draggable", false);
+    img.classList.add("letter")
+
+    return img;
 }
 
 function check(tiles){
@@ -68,12 +78,66 @@ function win(){
     fireworks()
     document.getElementById("win").classList.add("show");
     document.getElementById("win").style.pointerEvents = "all";
+
+    victoryMessage();
+    playAgain();
+}
+
+function victoryMessage(){
+    let victory = document.getElementById("victory");
+    
+    //Condense into For Loop later
+    let XO = getLetter(turn);
+    let _ = getLetter("_")
+    let W = getLetter("W");
+    let I = getLetter("I");
+    let N = getLetter("N");
+    let S = getLetter("S");
+    let E1 = getLetter("!");
+    let E2 = getLetter("!");
+    let E3 = getLetter("!");
+
+    let E = document.createElement("p");
+    E.appendChild(E1);
+    E.appendChild(E2);
+    E.appendChild(E3);
+    E.classList.add("letter")
+
+    let wins = document.createElement("p");
+
+    wins.appendChild(XO);
+    wins.appendChild(_);
+    wins.appendChild(W);
+    wins.appendChild(I);
+    wins.appendChild(N);
+    wins.appendChild(S);
+    wins.appendChild(E);
+
+    victory.removeChild(victory.firstChild);
+    victory.appendChild(wins);
+}
+
+function playAgain(){
+    let button = document.getElementById("again")
+    
+    //For loop here
+    let P = getLetter("P");
+    let _ = getLetter("_");
+    let A = getLetter("A");
+
+    let again = document.createElement("p");
+
+    again.appendChild(P);
+    again.appendChild(_);
+    again.appendChild(A);
+
+    button.appendChild(again);
 }
 
 function makeBoard(){
     let lineFiles = [];
     for(let i = 0; i<4; i++){
-        let num = Math.floor((Math.random()*100)) % lines;
+        let num = Math.floor((Math.random()*100)) % vars;
         lineFiles.push("board/"+num+".png");
     }
 
@@ -107,7 +171,7 @@ function fireworks(){
     confetti(
             Object.assign({}, defaults, {
             particleCount: 250,
-            origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
+            origin: { x: 0.5, y: Math.random() - 0.2 },
             })
         );
 

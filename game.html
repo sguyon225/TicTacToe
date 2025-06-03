@@ -6,13 +6,14 @@
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js"></script>
+    <script src="bot.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
 </head>
 <body id="body">
     <div class="players">
         <img src="letters\1\0.png">
         <label class="switch">
-            <input type="checkbox">
+            <input type="checkbox" id="mode" onclick="switchMode()">
             <span class="slider round"></span>
         </label>
         <img src="letters\1\1.png">
@@ -36,7 +37,7 @@
             <div class="line h" id="bottom"></div>
         </section>
     </section>
-    <div class="win" id="win">
+    <div class="menu" id="menu">
         <div class="inner"> 
             <div id="message">If you're reading this, I'm broken!</div>
             <button onclick="window.location.reload()" id="again"></button>

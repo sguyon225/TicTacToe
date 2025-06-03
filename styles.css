@@ -5,6 +5,7 @@
 body{
     background-image: url("paper.jpg"); /* Image by rawpixel.com on Freepik */
     background-size: cover;
+    overflow: hidden;
 }
 #board{
     justify-content: center;
@@ -72,12 +73,12 @@ img{
 #bottom{
     top: 60%;
 }
-/* Win Menu */
-.win{
+/* Popup Menu */
+.menu{
     opacity: 0;
     position: absolute;
     left: 50%;
-    top: 0;
+    bottom: -50vw;
     background-color: rgb(175, 227, 247);
     border: 8px solid skyblue;
     border-radius: 1.75vw;
@@ -101,6 +102,7 @@ img{
 }
 .show{
     opacity: 100%;
+    bottom: 8vw;
     transition: .4s;
 }
 #message p{
@@ -200,7 +202,7 @@ input:checked + .slider:before {
     :root{
         --board-size: 40vw;
     }
-    .win{
+    .menu{
         margin-left: -25vw;
     }
 }
@@ -218,7 +220,7 @@ input:checked + .slider:before {
         margin: auto;
         margin-top: 30%;
     }
-    .win{
+    .menu{
         position: unset;
         margin: 0;
         margin-top: 10%;

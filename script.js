@@ -1,3 +1,4 @@
+var mode = "solo"     //1 or 2 player mode
 var turn = "X";     //Who's turn is it
 const vars = 5;     //How many imgs of each letter in folders
 var xs = 0;         //How many Xs on board
@@ -77,70 +78,68 @@ function endGame(){
     for(let button of buttons){
         button.setAttribute("disabled", true);
     }
+
+    document.getElementById("menu").classList.add("show");
+    document.getElementById("menu").style.pointerEvents = "all";
+
+    playAgain();
 }
 
 function tie(){
-    endGame()
+    endGame();
+
+    let message = document.getElementById("message");
+    let tie = writeMessage("TIE");
+
+    message.removeChild(message.firstChild);
+    message.appendChild(tie);
 }
 
 function win(){
     endGame()
     fireworks()
-    document.getElementById("win").classList.add("show");
-    document.getElementById("win").style.pointerEvents = "all";
-
-    message();
-    playAgain();
+    victoryMessage();
 }
 
-function message(){
+//Temporary until I revamp the letters
+function victoryMessage(){
     let message = document.getElementById("message");
+    let wins = writeMessage(turn+" WINS")
     
-    //Condense into For Loop later
-    //helper function?
-    let XO = getLetter(turn);
-    let _ = getLetter("_")
-    let W = getLetter("W");
-    let I = getLetter("I");
-    let N = getLetter("N");
-    let S = getLetter("S");
     let E1 = getLetter("!");
     let E2 = getLetter("!");
     let E3 = getLetter("!");
-
     let E = document.createElement("p");
     E.appendChild(E1);
     E.appendChild(E2);
     E.appendChild(E3);
     E.classList.add("letter")
-
-    let wins = document.createElement("p");
-
-    wins.appendChild(XO);
-    wins.appendChild(_);
-    wins.appendChild(W);
-    wins.appendChild(I);
-    wins.appendChild(N);
-    wins.appendChild(S);
     wins.appendChild(E);
 
     message.removeChild(message.firstChild);
     message.appendChild(wins);
 }
 
+function writeMessage(string){
+    let letters = string.split("");
+    let output = document.createElement("p")
+
+    for (let letter of letters){
+        let img;
+        if(letter == " "){
+            img = getLetter("_")
+        }else{                
+            img = getLetter(letter)
+        }
+        output.appendChild(img)
+    }
+
+    return output;
+}
+
 function playAgain(){
     let button = document.getElementById("again")
-    
-    //For loop here
-    let P = getLetter("P");
-    let _ = getLetter("_");
-    let A = getLetter("A");
-
-    let again = document.createElement("p");
-
-    again.appendChild(P);
-    again.appendChild(_);
-    again.appendChild(A);
+    let again = writeMessage("P A")
 
     button.appendChild(again);
 }
@@ -153,7 +152,36 @@ function makeBoard(){
     }
 }
 
+function switchMode(){
+    switch(mode){
+        case "solo":
+            mode = "vs";
+            break;
+        case "vs":
+            mode = "solo";
+            break;
+    }
+    console.log(mode)
+
+    let buttons = document.querySelectorAll(".box");
+    for(let button of buttons){
+        if(button.hasChildNodes() == true){
+            button.removeChild(button.firstChild);
+        }
+        button.removeAttribute("disabled");
+    }
+    xs = 0;
+    os = 0;
+    xTiles = []
+    oTiles = []
+    
+    localStorage.setItem("gameMode", mode);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
+    if(localStorage.getItem("gameMode") == "vs"){
+        document.getElementById("mode").setAttribute("checked", true)
+    }
     makeBoard()
 });
 

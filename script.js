@@ -9,53 +9,43 @@ let winCons = [
     ["1","2","3"],["4","5","6"],["7","8","9"],["1","4","7"],
     ["2","5","8"],["3","6","9"],["1","5","9"],["3","5","7"]] //Win Conditions
 
-function capture(button){    
+function capture(space){
     if(turn == "X"){
-        xTiles.push(button.getAttribute("id"));
+        xTiles.push(space.getAttribute("id"));
         xs++;
     }else{
-        oTiles.push(button.getAttribute("id"));
+        oTiles.push(space.getAttribute("id"));
         os++;
     }
     let img = getLetter(turn)
-    button.appendChild(img);
-    button.setAttribute("disabled", true)
+    space.appendChild(img);
+    space.setAttribute("disabled", true)
 
     if(turn == "X" && xs>2){
         check(xTiles);
     }
     if(turn == "O" && os>2){
         check(oTiles);
-    }else if(os == 4){
+    }else if(xs+os == 9){
         tie();
     }
 
     switch(turn){
         case "X":
             turn = "O";
-            document.documentElement.style.setProperty("--current-img", `url("letters/O/0.png")`)
-            break;
+            if(mode == "vs"){
+                document.documentElement.style.setProperty("--current-img", `url("letters/O/0.png")`)
+                break;
+            }else{
+                takeTurn();
+            }
         case "O":
             turn = "X";
-            document.documentElement.style.setProperty("--current-img", `url("letters/X/0.png")`)
+            if(mode == "vs"){
+                document.documentElement.style.setProperty("--current-img", `url("letters/X/0.png")`)
+            }
             break;
     }
-}
-
-function getLetter(letter){
-    if(letter == "_"){
-        num = 0;
-    }else{
-        num=Math.floor((Math.random()*100)) % vars;
-    }
-
-    let img = document.createElement("img");
-    img.setAttribute("src", "letters/"+letter+"/"+num+".png");
-    img.setAttribute("alt", letter);
-    img.setAttribute("draggable", false);
-    img.classList.add("letter")
-
-    return img;
 }
 
 function check(tiles){
@@ -79,6 +69,8 @@ function endGame(){
         button.setAttribute("disabled", true);
     }
 
+    document.getElementById("switch").style.pointerEvents = "none"
+
     document.getElementById("menu").classList.add("show");
     document.getElementById("menu").style.pointerEvents = "all";
 
@@ -88,7 +80,7 @@ function endGame(){
 function tie(){
     endGame();
 
-    let message = document.getElementById("message");
+    let message = document.getElementById("result`");
     let tie = writeMessage("TIE");
 
     message.removeChild(message.firstChild);
@@ -103,34 +95,44 @@ function win(){
 
 //Temporary until I revamp the letters
 function victoryMessage(){
-    let message = document.getElementById("message");
-    let wins = writeMessage(turn+" WINS")
-    
-    let E1 = getLetter("!");
-    let E2 = getLetter("!");
-    let E3 = getLetter("!");
-    let E = document.createElement("p");
-    E.appendChild(E1);
-    E.appendChild(E2);
-    E.appendChild(E3);
-    E.classList.add("letter")
-    wins.appendChild(E);
+    let message = document.getElementById("result");
+    let wins = writeMessage(turn+" WINS!")
 
     message.removeChild(message.firstChild);
     message.appendChild(wins);
 }
 
+function getLetter(letter){
+    if(letter == " "){
+        num = 0;
+    }else{
+        num=Math.floor((Math.random()*100)) % vars;
+    }
+    let alt = letter;
+    if(letter == "?"){
+        letter = "qu";
+    } 
+    if(letter == " "){
+        letter = "_"
+    }
+
+    let img = document.createElement("img");
+    img.setAttribute("src", "letters/"+letter+"/"+num+".png");
+    img.setAttribute("alt", alt);
+    img.setAttribute("draggable", false);
+    img.classList.add("letter")
+
+    return img;
+}
+
 function writeMessage(string){
     let letters = string.split("");
-    let output = document.createElement("p")
+    let output = document.createElement("p");
+    output.classList.add("message");
 
     for (let letter of letters){
         let img;
-        if(letter == " "){
-            img = getLetter("_")
-        }else{                
-            img = getLetter(letter)
-        }
+        img = getLetter(letter)
         output.appendChild(img)
     }
 
@@ -139,7 +141,7 @@ function writeMessage(string){
 
 function playAgain(){
     let button = document.getElementById("again")
-    let again = writeMessage("P A")
+    let again = writeMessage("PLAY AGAIN?")
 
     button.appendChild(again);
 }
@@ -153,15 +155,13 @@ function makeBoard(){
 }
 
 function switchMode(){
-    switch(mode){
-        case "solo":
-            mode = "vs";
-            break;
-        case "vs":
-            mode = "solo";
-            break;
+    if(document.getElementById("mode").getAttribute("checked")){
+        document.getElementById("mode").removeAttribute("checked");
+        mode = "solo";
+    }else{
+        document.getElementById("mode").setAttribute("checked", true);
+        mode = "vs";
     }
-    console.log(mode)
 
     let buttons = document.querySelectorAll(".box");
     for(let button of buttons){
@@ -180,7 +180,9 @@ function switchMode(){
 
 document.addEventListener("DOMContentLoaded", function() {
     if(localStorage.getItem("gameMode") == "vs"){
-        document.getElementById("mode").setAttribute("checked", true)
+        document.getElementById("mode").setAttribute("checked", true);
+    }else{
+        document.getElementById("mode").removeAttribute("checked");
     }
     makeBoard()
 });

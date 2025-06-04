@@ -12,7 +12,7 @@
 <body id="body">
     <div class="players">
         <img src="letters\1\0.png">
-        <label class="switch">
+        <label class="switch" id="switch">
             <input type="checkbox" id="mode" onclick="switchMode()">
             <span class="slider round"></span>
         </label>
@@ -39,7 +39,7 @@
     </section>
     <div class="menu" id="menu">
         <div class="inner"> 
-            <div id="message">If you're reading this, I'm broken!</div>
+            <div id="result">If you're reading this, I'm broken!</div>
             <button onclick="window.location.reload()" id="again"></button>
         </div>
     </div>

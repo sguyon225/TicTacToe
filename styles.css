@@ -112,7 +112,7 @@ img{
     margin-left: .5vw;
     margin-right: .5vw;
 }
-p .letter{
+/* p .letter{
     width: calc(100% / 7);
     aspect-ratio: 1;
     object-fit: cover;
@@ -141,7 +141,7 @@ p.letter{
     width: 25%;
     object-fit: cover;
     overflow: visible;
-}
+} */
 
 /* 1/2 player switch */
 .players{
@@ -174,7 +174,7 @@ p.letter{
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("letters\\slidebar\\0.png");;
+  background-image: url("letters\\toggle\\0.png");;
   background-size: contain;
   background-repeat: no-repeat;
   overflow: visible;
@@ -187,7 +187,7 @@ p.letter{
   aspect-ratio: 1;
   left: .5vw;
   bottom: .5vw;
-  background-image: url("letters\\slider\\0.png");
+  background-image: url("letters\\ball\\0.png");
   background-size: cover;
   transition: 0.4s;
   border-radius: 50%;

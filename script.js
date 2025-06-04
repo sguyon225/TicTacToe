@@ -27,7 +27,8 @@ function capture(space){
     }
     if(turn == "O" && os>2){
         check(oTiles);
-    }else if(xs+os == 9){
+    }
+    if(xs+os == 9 && running == true){
         tie();
     }
 
@@ -85,12 +86,14 @@ function endGame(){
 
 function tie(){
     endGame();
-    results("TIE")
+    results("  TIE  ")
 }
 
 function win(){
     endGame()
-    fireworks()
+    if(mode == "vs" || turn == "X"){
+        fireworks()
+    } 
     results(turn+" WINS!")
 }
 
@@ -230,7 +233,7 @@ function fireworks(){
     confetti(
             Object.assign({}, defaults, {
             particleCount: 250,
-            origin: { x: 0.5, y: Math.random() - 0.2 },
+            origin: { x: 0.5, y: 0.2},
             })
         );
 
@@ -249,29 +252,29 @@ function fireworks(){
             origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
             })
         );
-        confetti(
-            Object.assign({}, defaults, {
-            particleCount,
-            origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
-            })
-        );
-        confetti(
-            Object.assign({}, defaults, {
-            particleCount,
-            origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
-            })
-        );
-        confetti(
-            Object.assign({}, defaults, {
-            particleCount,
-            origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
-            })
-        );
-        confetti(
-            Object.assign({}, defaults, {
-            particleCount,
-            origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
-            })
-        );
-    }, 2000);
+        // confetti(
+        //     Object.assign({}, defaults, {
+        //     particleCount,
+        //     origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
+        //     })
+        // );
+        // confetti(
+        //     Object.assign({}, defaults, {
+        //     particleCount,
+        //     origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
+        //     })
+        // );
+        // confetti(
+        //     Object.assign({}, defaults, {
+        //     particleCount,
+        //     origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
+        //     })
+        // );
+        // confetti(
+        //     Object.assign({}, defaults, {
+        //     particleCount,
+        //     origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
+        //     })
+        // );
+    }, 250);
 }

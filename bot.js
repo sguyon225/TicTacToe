@@ -33,11 +33,9 @@ function decide() {
     if (close.length == 0) {
         while(true){
             let square = ""+((Math.floor(Math.random()*100) % 9) + 1);
-            console.log(square, xTiles, oTiles)
-
+            
             if(xTiles.includes(square) || oTiles.includes(square)){}
             else{
-                console.log(square)
                 close.push(square);
                 break;
             }

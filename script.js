@@ -1,4 +1,5 @@
-var mode = "solo"     //1 or 2 player mode
+var running = true; //Is the game still running
+var mode = "solo";  //1 or 2 player mode
 var turn = "X";     //Who's turn is it
 const vars = 5;     //How many imgs of each letter in folders
 var xs = 0;         //How many Xs on board
@@ -30,7 +31,8 @@ function capture(space){
         tie();
     }
 
-    switch(turn){
+    if(running == true){
+        switch(turn){
         case "X":
             turn = "O";
             if(mode == "vs"){
@@ -45,7 +47,9 @@ function capture(space){
                 document.documentElement.style.setProperty("--current-img", `url("letters/X/0.png")`)
             }
             break;
+        }
     }
+    
 }
 
 function check(tiles){
@@ -64,6 +68,8 @@ function check(tiles){
 }
 
 function endGame(){
+    running = false;
+
     let buttons = document.querySelectorAll(".box");
     for(let button of buttons){
         button.setAttribute("disabled", true);
@@ -79,30 +85,24 @@ function endGame(){
 
 function tie(){
     endGame();
-
-    let message = document.getElementById("result`");
-    let tie = writeMessage("TIE");
-
-    message.removeChild(message.firstChild);
-    message.appendChild(tie);
+    results("TIE")
 }
 
 function win(){
     endGame()
     fireworks()
-    victoryMessage();
+    results(turn+" WINS!")
 }
 
-//Temporary until I revamp the letters
-function victoryMessage(){
+function results(result){
     let message = document.getElementById("result");
-    let wins = writeMessage(turn+" WINS!")
+    let resultText = writeMessage(result)
 
     message.removeChild(message.firstChild);
-    message.appendChild(wins);
+    message.appendChild(resultText);
 }
 
-function getLetter(letter){
+function getLetter(letter, returnElement=true){
     if(letter == " "){
         num = 0;
     }else{
@@ -116,13 +116,18 @@ function getLetter(letter){
         letter = "_"
     }
 
-    let img = document.createElement("img");
-    img.setAttribute("src", "letters/"+letter+"/"+num+".png");
-    img.setAttribute("alt", alt);
-    img.setAttribute("draggable", false);
-    img.classList.add("letter")
+    if(returnElement == true){
+        let img = document.createElement("img");
+        img.setAttribute("src", "letters/"+letter+"/"+num+".png");
+        img.setAttribute("alt", alt);
+        img.setAttribute("draggable", false);
+        img.classList.add("letter")
+        let div = document.createElement("div");
+        div.appendChild(img);
 
-    return img;
+        return div;
+    }
+    return "letters/"+letter+"/"+num+".png";
 }
 
 function writeMessage(string){
@@ -152,6 +157,23 @@ function makeBoard(){
         let img = getLetter("line");
         lines[i].appendChild(img);
     }
+
+    let p1 = writeMessage("1 PLAYER");
+    let p2 = writeMessage("2 PLAYER");
+    document.getElementById("p1").appendChild(p1);
+    document.getElementById("p2").appendChild(p2);
+
+    let toggle = getLetter("toggle", false)
+    let ball = getLetter("ball", false)
+    let slider = document.getElementById("slider");
+    slider.style.backgroundImage = toggle;
+    window.getComputedStyle(slider, ball);
+
+    let toggleUrl = `url('`+toggle+`')`;
+    let ballUrl = `url('`+ball+`')`;
+
+    slider.style.setProperty('--toggle-img', toggleUrl);
+    slider.style.setProperty('--ball-img', ballUrl);
 }
 
 function switchMode(){
@@ -172,8 +194,10 @@ function switchMode(){
     }
     xs = 0;
     os = 0;
-    xTiles = []
-    oTiles = []
+    xTiles = [];
+    oTiles = [];
+    turn = "X";
+    document.documentElement.style.setProperty("--current-img", `url("letters/X/0.png")`)
     
     localStorage.setItem("gameMode", mode);
 }
@@ -181,10 +205,13 @@ function switchMode(){
 document.addEventListener("DOMContentLoaded", function() {
     if(localStorage.getItem("gameMode") == "vs"){
         document.getElementById("mode").setAttribute("checked", true);
+        mode = "vs";
     }else{
         document.getElementById("mode").removeAttribute("checked");
     }
+
     makeBoard()
+    
 });
 
 // -----------------------------------------------------------------------------------------------------------

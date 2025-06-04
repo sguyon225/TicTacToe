@@ -1,6 +1,8 @@
 :root{
     --board-size: 20vw;
     --current-img: url("letters/X/0.png");
+    --toggle-img: ;
+    --ball-img: ;
 }
 body{
     background-image: url("paper.jpg"); /* Image by rawpixel.com on Freepik */
@@ -16,9 +18,6 @@ body{
     margin-top: 15%;
 }
 #playArea{
-    /* position: absolute;
-    left: calc(var(--board-size) * 1.17);
-    top: calc(var(--board-size) * .3); */
     display: grid;
     grid-template-columns: repeat(3,1fr);
     gap: calc(var(--board-size) * .05 );
@@ -43,6 +42,7 @@ body{
 }
 img{
     width: 100%;
+    max-width: 200px;
     padding: 0;
     margin: 0;
     display: block;
@@ -53,6 +53,12 @@ img{
 .line{
     width: calc(var(--board-size) * 1.15);
     position: absolute;
+}
+.line div{
+    min-width: 100%;
+}
+.line div img{
+    min-width: 100%;
 }
 .line.h{
     left: -10%;
@@ -73,6 +79,7 @@ img{
 #bottom{
     top: 60%;
 }
+
 /* Popup Menu */
 .menu{
     opacity: 0;
@@ -80,7 +87,7 @@ img{
     left: 50%;
     bottom: -50vw;
     background-color: rgb(175, 227, 247);
-    border: 8px solid skyblue;
+    border: .45vw solid skyblue;
     border-radius: 1.75vw;
     width: calc(var(--board-size) * 2.5);
     height: calc(var(--board-size) * 1.5);
@@ -92,7 +99,7 @@ img{
 }
 .inner{
     background-color: rgb(175, 227, 247);
-    border: 8px dotted skyblue;
+    border: .45vw dotted skyblue;
     border-radius: 1.5vw;
     width: 98%;
     height: 96%;
@@ -105,26 +112,18 @@ img{
     bottom: 8vw;
     transition: .4s;
 }
-#message p{
+.message{
     display: flex;
     flex-direction: row;
     width: 100%;
     margin-left: .5vw;
     margin-right: .5vw;
-}
-/* p .letter{
-    width: calc(100% / 7);
-    aspect-ratio: 1;
-    object-fit: cover;
-    overflow: visible;
-}
-p.letter{
-    margin-left: 0;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 #again{
-    margin: 3vw 4vw;
-    border: 8px solid skyblue;
+    margin: .5vw 2vw;
+    padding: 2vw;
+    border: .45vw solid skyblue;
     border-radius: 3vw;
     background-color: rgb(175, 227, 247);
 }
@@ -132,69 +131,58 @@ p.letter{
     background-color: rgb(201, 232, 245);
     border-color: rgb(167, 216, 235);
 }
-#again p{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-#again img{
-    width: 25%;
-    object-fit: cover;
-    overflow: visible;
-} */
 
 /* 1/2 player switch */
 .players{
     position: absolute;
     display: flex;
     top: 6vw;
-    margin-left: 32vw;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 40vw;
+    justify-content: center;
 }
-.players img{
-    width: 10vw;
-    margin: 0 2vw;
+.players div{
+    width: 30%;
 }
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 8vw;
-  height: 4vw;
+    position: relative;
+    display: inline-block;
+    min-width: 8vw;
+    height: 4vw;
+    margin: 0 2vw;
 }
-
 .switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
-
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("letters\\toggle\\0.png");;
-  background-size: contain;
-  background-repeat: no-repeat;
-  overflow: visible;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--toggle-img);
+    background-size: contain;
+    background-repeat: no-repeat;
+    overflow: visible;
 }
-
 .slider:before {
-  content: "";
-  position: absolute;
-  width: 3vw;
-  aspect-ratio: 1;
-  left: .5vw;
-  bottom: .5vw;
-  background-image: url("letters\\ball\\0.png");
-  background-size: cover;
-  transition: 0.4s;
-  border-radius: 50%;
+    content: "";
+    position: absolute;
+    width: 3vw;
+    aspect-ratio: 1;
+    left: .5vw;
+    bottom: .5vw;
+    background-image: var(--ball-img);
+    background-size: cover;
+    transition: 0.4s;
+    border-radius: 50%;
 }
-
 input:checked + .slider:before {
-  transform: translateX(4vw) rotate(180deg);
+    transform: translateX(4vw) rotate(180deg);
 }
 
 /* smaller screen */

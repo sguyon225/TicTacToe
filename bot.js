@@ -1,12 +1,7 @@
 function takeTurn() {
-    let close = decide();
+    let choice = decide();
 
-    if (close.length === 0) {
-        capture(document.getElementById("2"));
-    } else {
-        console.log("choosing", close[0]);
-        capture(document.getElementById("" + close[0]));
-    }
+    capture(document.getElementById("" + choice[0]));
 }
 function decide() {
     let close = [];
@@ -32,6 +27,20 @@ function decide() {
 
         if (xCount === 2 && empty.length === 1) {
             close.push(empty[0]);
+        }
+    }
+
+    if (close.length == 0) {
+        while(true){
+            let square = ""+((Math.floor(Math.random()*100) % 9) + 1);
+            console.log(square, xTiles, oTiles)
+
+            if(xTiles.includes(square) || oTiles.includes(square)){}
+            else{
+                console.log(square)
+                close.push(square);
+                break;
+            }
         }
     }
 
